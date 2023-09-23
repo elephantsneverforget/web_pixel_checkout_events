@@ -1,5 +1,5 @@
+/* global browser, analytics */
 window.__elevar_web_pixel = {
-  // GTM Initialization
   initializeGTM: function() {
     (function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
     new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],

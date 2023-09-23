@@ -2,6 +2,9 @@
  * @jest-environment jsdom
  */
 
+// Fixes errors on jest methods
+/* eslint-env jest */
+
 // Mock the dataLayer array on the global window object to allow GTM to load
 global.window.dataLayer = [];
 global.document.createElement = jest.fn(() => ({
