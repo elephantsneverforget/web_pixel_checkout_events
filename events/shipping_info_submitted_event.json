@@ -1,0 +1,325 @@
+{
+  "id": "sh-c2c06a20-2DE1-47BB-7D05-84CAFE2D85DB",
+  "name": "checkout_shipping_info_submitted",
+  "data": {
+      "checkout": {
+          "attributes": [
+              {
+                  "key": "_elevar__ga",
+                  "value": "GA1.1.82045379.1693513006"
+              },
+              {
+                  "key": "_elevar__ga_PVGWM6052X",
+                  "value": "GS1.1.1695483516.3"
+              },
+              {
+                  "key": "_elevar__ga_DLM6GD523K",
+                  "value": "GS1.1.1695483516.3"
+              },
+              {
+                  "key": "_elevar_visitor_info",
+                  "value": "{\"user_id\":\"220d9cbb-3dca-489c-be4d-ed0f4d678664\",\"session_id\":\"1695483516\",\"session_count\":\"4\"}"
+              },
+              {
+                  "key": "_elevar__ga_96CQQPTBZR",
+                  "value": "GS1.1.1695483520.2"
+              }
+          ],
+          "billingAddress": {
+              "country": "FR",
+              "countryCode": "FR",
+              "province": "AB",
+              "provinceCode": "AB"
+          },
+          "token": "f0b6bce52d8a324defeb6da99733236b",
+          "currencyCode": "USD",
+          "discountApplications": [
+              {
+                  "allocationMethod": "ACROSS",
+                  "targetSelection": "ENTITLED",
+                  "targetType": "LINE_ITEM",
+                  "title": "20% off all products",
+                  "type": "automatic",
+                  "value": {
+                      "percentage": 20
+                  }
+              },
+              {
+                  "allocationMethod": "ACROSS",
+                  "targetSelection": "ALL",
+                  "targetType": "LINE_ITEM",
+                  "title": "coupon",
+                  "type": "code",
+                  "value": {
+                      "percentage": 10
+                  }
+              }
+          ],
+          "email": "orders@getelevar.com",
+          "phone": "",
+          "lineItems": [
+              {
+                  "discountAllocations": [
+                      {
+                          "amount": {
+                              "amount": 18,
+                              "currencyCode": "USD"
+                          },
+                          "discountApplication": {
+                              "allocationMethod": "ACROSS",
+                              "targetSelection": "ENTITLED",
+                              "targetType": "LINE_ITEM",
+                              "title": "20% off all products",
+                              "type": "automatic",
+                              "value": {
+                                  "percentage": 20
+                              }
+                          }
+                      },
+                      {
+                          "amount": {
+                              "amount": 7.2,
+                              "currencyCode": "USD"
+                          },
+                          "discountApplication": {
+                              "allocationMethod": "ACROSS",
+                              "targetSelection": "ALL",
+                              "targetType": "LINE_ITEM",
+                              "title": "coupon",
+                              "type": "code",
+                              "value": {
+                                  "percentage": 10
+                              }
+                          }
+                      }
+                  ],
+                  "id": "14519105093750",
+                  "quantity": 1,
+                  "title": "2016 Louisville Slugger CM271 Cut Maple Natural  Bat: WBCM271NG",
+                  "variant": {
+                      "id": "14519105093750",
+                      "image": {
+                          "src": "https://cdn.shopify.com/s/files/1/0069/2469/7718/products/ls-wbcm271ngboth_1_64x64.jpg?v=1529886324"
+                      },
+                      "price": {
+                          "amount": 89.99,
+                          "currencyCode": "USD"
+                      },
+                      "product": {
+                          "id": "1614321713270",
+                          "title": "2016 Louisville Slugger CM271 Cut Maple Natural  Bat: WBCM271NG",
+                          "vendor": "Louisville Slugger",
+                          "type": "Bats",
+                          "untranslatedTitle": "2016 Louisville Slugger CM271 Cut Maple Natural  Bat: WBCM271NG"
+                      },
+                      "sku": "LS-WBCM271NG32",
+                      "title": "32\"",
+                      "untranslatedTitle": "32\""
+                  }
+              },
+              {
+                  "discountAllocations": [
+                      {
+                          "amount": {
+                              "amount": 16,
+                              "currencyCode": "USD"
+                          },
+                          "discountApplication": {
+                              "allocationMethod": "ACROSS",
+                              "targetSelection": "ENTITLED",
+                              "targetType": "LINE_ITEM",
+                              "title": "20% off all products",
+                              "type": "automatic",
+                              "value": {
+                                  "percentage": 20
+                              }
+                          }
+                      },
+                      {
+                          "amount": {
+                              "amount": 6.4,
+                              "currencyCode": "USD"
+                          },
+                          "discountApplication": {
+                              "allocationMethod": "ACROSS",
+                              "targetSelection": "ALL",
+                              "targetType": "LINE_ITEM",
+                              "title": "coupon",
+                              "type": "code",
+                              "value": {
+                                  "percentage": 10
+                              }
+                          }
+                      }
+                  ],
+                  "id": "14519102406774",
+                  "quantity": 2,
+                  "title": "2016 Easton Stealth Hyperskin Fastpitch Batting Gloves: A121367",
+                  "variant": {
+                      "id": "14519102406774",
+                      "image": {
+                          "src": "https://cdn.shopify.com/s/files/1/0069/2469/7718/products/ea-a121367back_1_1_1_64x64.jpg?v=1529886318"
+                      },
+                      "price": {
+                          "amount": 39.99,
+                          "currencyCode": "USD"
+                      },
+                      "product": {
+                          "id": "1614320992374",
+                          "title": "2016 Easton Stealth Hyperskin Fastpitch Batting Gloves: A121367",
+                          "vendor": "Easton",
+                          "type": "Equipment",
+                          "untranslatedTitle": "2016 Easton Stealth Hyperskin Fastpitch Batting Gloves: A121367"
+                      },
+                      "sku": "EA-A121367WPL",
+                      "title": "White/Purple / Large",
+                      "untranslatedTitle": "White/Purple / Large"
+                  }
+              },
+              {
+                  "discountAllocations": [
+                      {
+                          "amount": {
+                              "amount": 25.99,
+                              "currencyCode": "USD"
+                          },
+                          "discountApplication": {
+                              "allocationMethod": "ACROSS",
+                              "targetSelection": "ENTITLED",
+                              "targetType": "LINE_ITEM",
+                              "title": "20% off all products",
+                              "type": "automatic",
+                              "value": {
+                                  "percentage": 20
+                              }
+                          }
+                      },
+                      {
+                          "amount": {
+                              "amount": 10.4,
+                              "currencyCode": "USD"
+                          },
+                          "discountApplication": {
+                              "allocationMethod": "ACROSS",
+                              "targetSelection": "ALL",
+                              "targetType": "LINE_ITEM",
+                              "title": "coupon",
+                              "type": "code",
+                              "value": {
+                                  "percentage": 10
+                              }
+                          }
+                      }
+                  ],
+                  "id": "14519104667766",
+                  "quantity": 1,
+                  "title": "2016 Easton Mako Catchers Helmet: A165324",
+                  "variant": {
+                      "id": "14519104667766",
+                      "image": {
+                          "src": "https://cdn.shopify.com/s/files/1/0069/2469/7718/products/EA-A165323BK_64x64.jpg?v=1529886322"
+                      },
+                      "price": {
+                          "amount": 129.99,
+                          "currencyCode": "USD"
+                      },
+                      "product": {
+                          "id": "1614321647734",
+                          "title": "2016 Easton Mako Catchers Helmet: A165324",
+                          "vendor": "Easton",
+                          "type": "Equipment",
+                          "untranslatedTitle": "2016 Easton Mako Catchers Helmet: A165324"
+                      },
+                      "sku": "EA-A165324BK",
+                      "title": "Black / Small",
+                      "untranslatedTitle": "Black / Small"
+                  }
+              }
+          ],
+          "order": {},
+          "shippingAddress": {
+              "address1": "1059 Hills Plantation Drive",
+              "city": "Charleston",
+              "country": "US",
+              "countryCode": "US",
+              "firstName": "Brad",
+              "lastName": "Redding",
+              "phone": "",
+              "province": "SC",
+              "provinceCode": "SC",
+              "zip": "29412"
+          },
+          "subtotalPrice": {
+              "amount": 239.97,
+              "currencyCode": "USD"
+          },
+          "shippingLine": {
+              "price": {
+                  "amount": 7.25,
+                  "currencyCode": "USD"
+              }
+          },
+          "totalTax": {
+              "amount": 20.12,
+              "currencyCode": "USD"
+          },
+          "totalPrice": {
+              "amount": 243.34,
+              "currencyCode": "USD"
+          }
+      }
+  },
+  "clientId": "e670281b-f8ed-491a-a723-f85ba13f2187",
+  "timestamp": "2023-09-23T15:49:52.641Z",
+  "context": {
+      "document": {
+          "location": {
+              "href": "https://elevar-gtm-app-store.myshopify.com/checkouts/cn/c1-c5884d3ac87c3a6a5c83f930ebcbe542/shipping",
+              "hash": "",
+              "host": "elevar-gtm-app-store.myshopify.com",
+              "hostname": "elevar-gtm-app-store.myshopify.com",
+              "origin": "https://elevar-gtm-app-store.myshopify.com",
+              "pathname": "/checkouts/cn/c1-c5884d3ac87c3a6a5c83f930ebcbe542/shipping",
+              "port": "",
+              "protocol": "https:",
+              "search": ""
+          },
+          "referrer": "https://elevar-gtm-app-store.myshopify.com/",
+          "characterSet": "UTF-8",
+          "title": "Shipping - Elevar GTM App Store - Checkout"
+      },
+      "navigator": {
+          "language": "en-US",
+          "cookieEnabled": true,
+          "languages": [
+              "en-US",
+              "en"
+          ],
+          "userAgent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/116.0.0.0 Safari/537.36"
+      },
+      "window": {
+          "innerHeight": 661,
+          "innerWidth": 1540,
+          "outerHeight": 1703,
+          "outerWidth": 1540,
+          "pageXOffset": 0,
+          "pageYOffset": 0,
+          "location": {
+              "href": "https://elevar-gtm-app-store.myshopify.com/checkouts/cn/c1-c5884d3ac87c3a6a5c83f930ebcbe542/shipping",
+              "hash": "",
+              "host": "elevar-gtm-app-store.myshopify.com",
+              "hostname": "elevar-gtm-app-store.myshopify.com",
+              "origin": "https://elevar-gtm-app-store.myshopify.com",
+              "pathname": "/checkouts/cn/c1-c5884d3ac87c3a6a5c83f930ebcbe542/shipping",
+              "port": "",
+              "protocol": "https:",
+              "search": ""
+          },
+          "origin": "https://elevar-gtm-app-store.myshopify.com",
+          "screenX": 356,
+          "screenY": 25,
+          "scrollX": 0,
+          "scrollY": 0
+      }
+  }
+}

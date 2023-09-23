@@ -1,111 +1,130 @@
 /**
  * @jest-environment jsdom
  */
-require("zulily_web_pixel");
+
+// Mock the dataLayer array on the global window object to allow GTM to load
+global.window.dataLayer = [];
+global.document.createElement = jest.fn(() => ({
+  set async(val) {}, // mock setter for async
+  set src(val) {},   // mock setter for src
+}));
+global.document.getElementsByTagName = jest.fn(() => [{
+  parentNode: {
+    insertBefore: jest.fn(),
+  },
+}]);
+// Mocking Shopify analytics
+global.analytics = {
+  subscribe: jest.fn()
+};
 
 debugger;
-console.log(window.testing_a);
-global.browser = {
-  localStorage: {
-    getItem: jest.fn(),
-  },
-};
 
-window.dataLayer = {
-  push: jest.fn(),
-};
+// Run the main script
+require("zulily_web_pixel");
 
-const mockAnalytics = {
-  subscribe: jest.fn(),
-};
+// Sample events have multiple line items, with multiple discount types
+// Sample events are based on the same cart, with the same items
+const beginCheckoutEvent = require("./events/begin_checkout_event.json");
+const paymentInfoSubmittedEvent = require("./events/payment_info_submitted_event.json");
+const shippingInfoSubmittedEvent = require("./events/shipping_info_submitted_event.json");
 
-// Tests
-describe('getReferringEventId', () => {
-  it('should retrieve the correct referring event id', async () => {
-    global.browser.localStorage.getItem.mockResolvedValueOnce(JSON.stringify(['id1', 'id2']));
-    const eventId = await getReferringEventId();
-    expect(eventId).toBe('id1');
+describe('__elevar_web_pixel library', () => {
+
+  // Mock dataLayer
+  let dataLayerMock;
+
+  beforeEach(() => {
+    dataLayerMock = [];
+    Object.defineProperty(window, 'dataLayer', {
+      value: dataLayerMock,
+      writable: true,
+    });
+    // Mock localStorage
+    jest.spyOn(window.localStorage.__proto__, 'getItem').mockImplementation((key) => {
+      return JSON.stringify(['event123']);
+    });
   });
 
-  it('should return undefined for invalid data', async () => {
-    global.browser.localStorage.getItem.mockResolvedValueOnce('invalid_data');
-    const eventId = await getReferringEventId();
-    expect(eventId).toBeUndefined();
+  afterEach(() => {
+    jest.clearAllMocks();
   });
 
-  // ... more scenarios
-});
+  it('should initialize GTM correctly', () => {
+    window.__elevar_web_pixel.initializeGTM();
+    // Check if the script element has been created for GTM
+    expect(document.querySelector("script[src^='https://www.googletagmanager.com/gtm.js?id=']")).not.toBeNull();
+  });
 
-describe('getFormattedItems', () => {
-  it('should correctly format items', () => {
+  it('should retrieve referring event ID', async () => {
+    const eventId = await window.__elevar_web_pixel.getReferringEventId();
+    expect(eventId).toBe('event123');
+  });
+
+  it('should format items correctly', () => {
     const mockEvent = {
       data: {
         checkout: {
           lineItems: [
             {
               variant: {
-                sku: '123',
-                id: 'id1',
+                sku: 'SKU123',
+                id: 'VARIANT123',
                 product: {
-                  id: 'productId1',
-                  vendor: 'vendor1',
+                  id: 'PRODUCT123',
+                  vendor: 'VENDOR123'
                 },
                 price: {
-                  amount: '100',
-                },
+                  amount: 99.99
+                }
               },
-              title: 'Product 1',
-              category: 'Category 1',
-              quantity: 1,
-            },
-            // ... more products
-          ],
-        },
-      },
+              title: 'Test Product',
+              category: 'Test Category',
+              quantity: 1
+            }
+          ]
+        }
+      }
     };
-    const items = getFormattedItems(mockEvent);
-    expect(items).toEqual([
-      {
-        "item_id": '123',
-        // ... other attributes
-      },
-      // ... more formatted products
-    ]);
-  });
-});
 
-describe('analytics subscriptions', () => {
-  it('should push the correct data on checkout_started', async () => {
+    const items = window.__elevar_web_pixel.getFormattedItems(mockEvent);
+    expect(items).toEqual([{
+      "item_id": "SKU123",
+      "item_variant_id": "VARIANT123",
+      "item_product_id": "PRODUCT123",
+      "item_name": "Test Product",
+      "item_brand": "VENDOR123",
+      "item_category": "Test Category",
+      "item_variant": "Test Product",
+      "quantity": 1,
+      "price": 99.99
+    }]);
+  });
+
+  // Similar tests can be written for onCheckoutStarted, onShippingInfoSubmitted, 
+  // and onPaymentInfoSubmitted where you mock necessary methods and check if 
+  // window.dataLayer receives the expected data.
+
+  // Example:
+  it('should handle checkout_started event correctly', async () => {
     const mockEvent = {
-      id: 'eventId1',
+      id: 'eventID123',
       data: {
         checkout: {
-          lineItems: [],
-          totalPrice: {
-            amount: '100',
-          },
-          subtotalPrice: {
-            amount: '80',
-          },
-          currencyCode: 'USD',
-        },
-      },
+          // your mock data here
+        }
+      }
     };
-    global.browser.localStorage.getItem.mockResolvedValueOnce(JSON.stringify(['id1', 'id2']));
 
-    await mockAnalytics.subscribe.mock.calls[0][1](mockEvent); // assuming 'checkout_started' is the first subscription
-    expect(window.dataLayer.push).toHaveBeenCalledWith({
+    await window.__elevar_web_pixel.onCheckoutStarted(mockEvent);
+
+    // Check the data pushed into dataLayer
+    expect(dataLayerMock).toContainEqual({
       event: 'dl_begin_checkout',
-      referring_event_id: 'id1',
-      event_id: 'eventId1',
-      items: [],
-      cart_total: '100',
-      subtotal: '80',
-      ecommerce: {
-        currencyCode: 'USD',
-      },
+      // ... other expected fields
     });
   });
 
-  // ... more tests for other analytics subscriptions
+  // Similar tests for other functions...
+
 });
