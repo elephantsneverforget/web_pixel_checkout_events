@@ -43,7 +43,6 @@ window.__elevar_web_pixel = {
         (discountApplication) =>
           typeof discountApplication.value.amount !== "undefined"
       );
-    debugger;
     const percentBasedDiscounts =
       shippingDiscountApplicationsPercentBased.reduce(
         (acc, shippingDiscountAllocation) => {
@@ -57,7 +56,7 @@ window.__elevar_web_pixel = {
     const fixedBasedDiscounts =
       shippingDiscountApplicationsFixedAmountBased.reduce(
         (acc, shippingDiscountAllocation) => {
-          return acc + Number(shippingDiscountAllocation.amount);
+          return acc + Number(shippingDiscountAllocation.value.amount);
         },
         0
       );

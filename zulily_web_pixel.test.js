@@ -38,6 +38,7 @@ require("zulily_web_pixel");
 // Sample events have multiple line items, with multiple discount types
 // Sample events are based on the same cart, with the same items
 const beginCheckoutEvent = require("./event_samples/begin_checkout_event.json");
+const beginCheckoutEventWithAmountBasedDiscount = require("./event_samples/begin_checkout_event_with_amount_based_discount.json");
 const paymentInfoSubmittedEvent = require("./event_samples/payment_info_submitted_event.json");
 const shippingInfoSubmittedEvent = require("./event_samples/shipping_info_submitted_event.json");
 
@@ -75,11 +76,18 @@ describe("__elevar_web_pixel library", () => {
     expect(eventId).toBe("284eed8a-1189-48d0-9933-740a2db544fb");
   });
 
-  it("should calculate the correct total shipping discount", async () => {
+  it("should calculate the correct total shipping discount when discount is percentage based", async () => {
     const totalDiscount = await window.__elevar_web_pixel.getTotalShippingDiscount(
       beginCheckoutEvent
     );
     expect(totalDiscount).toBe(7.25);
+  });
+
+  it("should calculate the correct total shipping discount when discount is amount based", async () => {
+    const totalDiscount = await window.__elevar_web_pixel.getTotalShippingDiscount(
+      beginCheckoutEventWithAmountBasedDiscount
+    );
+    expect(totalDiscount).toBe(5);
   });
 
   it("should handle the checkout_started event", async () => {
