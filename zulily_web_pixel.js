@@ -47,7 +47,8 @@ window.__elevar_web_pixel = {
       shippingDiscountApplicationsPercentBased.reduce(
         (acc, shippingDiscountAllocation) => {
           const percentDiscount = shippingDiscountAllocation.value.percentage;
-          const totalShippingCost = event.data.checkout.shippingLine.price.amount;
+          const totalShippingCost =
+            event.data.checkout.shippingLine.price.amount;
           const discount = (percentDiscount / 100) * totalShippingCost;
           return acc + Number(discount);
         },
@@ -61,6 +62,18 @@ window.__elevar_web_pixel = {
         0
       );
     return percentBasedDiscounts + fixedBasedDiscounts;
+  },
+
+  getShippingDiscountReasons: function (event) {
+    const discountApplications = event.data.checkout.discountApplications;
+    const shippingDiscountApplications = discountApplications.filter(
+      (discountApplication) =>
+        discountApplication.targetType === "SHIPPING_LINE"
+    );
+    const reasons = shippingDiscountApplications.map((discountApplication) => {
+      return discountApplication.title ?? "Unknown";
+    });
+    return reasons.length > 0 ? JSON.stringify(reasons) : undefined;
   },
 
   // Utility to get formatted items
@@ -93,6 +106,7 @@ window.__elevar_web_pixel = {
       cart_total: event.data.checkout.totalPrice.amount,
       subtotal: event.data.checkout.subtotalPrice.amount,
       shipping_discount: this.getTotalShippingDiscount(event),
+      shipping_discount_reasons: this.getShippingDiscountReasons(event),
       ecommerce: {
         currencyCode: event.data.checkout.currencyCode,
       },
@@ -105,6 +119,7 @@ window.__elevar_web_pixel = {
       event: "dl_add_shipping_info",
       referring_event_id: reid,
       shipping_discount: this.getTotalShippingDiscount(event),
+      shipping_discount_reasons: this.getShippingDiscountReasons(event),
       ecommerce: {
         currencyCode: event.data.checkout.currencyCode,
       },
@@ -117,6 +132,7 @@ window.__elevar_web_pixel = {
       event: "dl_add_payment_info",
       referring_event_id: reid,
       shipping_discount: this.getTotalShippingDiscount(event),
+      shipping_discount_reasons: this.getShippingDiscountReasons(event),
       ecommerce: {
         currencyCode: event.data.checkout.currencyCode,
       },

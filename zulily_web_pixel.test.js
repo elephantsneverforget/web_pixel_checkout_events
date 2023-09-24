@@ -30,8 +30,6 @@ global.browser = {
   },
 };
 
-debugger;
-
 // Run the main script
 require("zulily_web_pixel");
 
@@ -88,6 +86,13 @@ describe("__elevar_web_pixel library", () => {
       beginCheckoutEventWithAmountBasedDiscount
     );
     expect(totalDiscount).toBe(5);
+  });
+
+  it("should calculate the correct shipping discount reasons", async () => {
+    const discountReasons = await window.__elevar_web_pixel.getShippingDiscountReasons(
+      beginCheckoutEventWithAmountBasedDiscount
+    );
+    expect(discountReasons).toBe("[\"Auto shipping discount\"]");
   });
 
   it("should handle the checkout_started event", async () => {
