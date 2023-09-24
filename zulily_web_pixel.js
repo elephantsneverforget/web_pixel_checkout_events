@@ -27,7 +27,7 @@ window.__elevar_web_pixel = {
     }
   },
 
-  getTotalShippingDiscount: async function (event) {
+  getTotalShippingDiscount: function (event) {
     const discountApplications = event.data.checkout.discountApplications;
     const shippingDiscountApplications = discountApplications.filter(
       (discountApplication) =>
@@ -92,6 +92,7 @@ window.__elevar_web_pixel = {
       items: this.getFormattedItems(event),
       cart_total: event.data.checkout.totalPrice.amount,
       subtotal: event.data.checkout.subtotalPrice.amount,
+      shipping_discount: this.getTotalShippingDiscount(event),
       ecommerce: {
         currencyCode: event.data.checkout.currencyCode,
       },
@@ -103,6 +104,7 @@ window.__elevar_web_pixel = {
     window.dataLayer.push({
       event: "dl_add_shipping_info",
       referring_event_id: reid,
+      shipping_discount: this.getTotalShippingDiscount(event),
       ecommerce: {
         currencyCode: event.data.checkout.currencyCode,
       },
@@ -114,6 +116,7 @@ window.__elevar_web_pixel = {
     window.dataLayer.push({
       event: "dl_add_payment_info",
       referring_event_id: reid,
+      shipping_discount: this.getTotalShippingDiscount(event),
       ecommerce: {
         currencyCode: event.data.checkout.currencyCode,
       },
