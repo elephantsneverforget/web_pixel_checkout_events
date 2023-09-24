@@ -1,0 +1,335 @@
+{
+    "id": "sh-c7c62007-7FD4-47CD-6CDC-0B1DC76A2ABD",
+    "name": "checkout_shipping_info_submitted",
+    "data": {
+        "checkout": {
+            "attributes": [
+                {
+                    "key": "_elevar__ga",
+                    "value": "GA1.1.82045379.1693513006"
+                },
+                {
+                    "key": "_elevar__ga_96CQQPTBZR",
+                    "value": "GS1.1.1695568496.3"
+                },
+                {
+                    "key": "_elevar__ga_PVGWM6052X",
+                    "value": "GS1.1.1695568374.4"
+                },
+                {
+                    "key": "_elevar__ga_DLM6GD523K",
+                    "value": "GS1.1.1695568374.4"
+                },
+                {
+                    "key": "_elevar_visitor_info",
+                    "value": "{\"user_id\":\"220d9cbb-3dca-489c-be4d-ed0f4d678664\",\"session_id\":\"1695568375\",\"session_count\":\"5\"}"
+                }
+            ],
+            "billingAddress": {
+                "country": "CA",
+                "countryCode": "CA",
+                "province": "AB",
+                "provinceCode": "AB"
+            },
+            "token": "941740a5f8408f84edca628e48309d7e",
+            "currencyCode": "USD",
+            "discountApplications": [
+                {
+                    "allocationMethod": "ACROSS",
+                    "targetSelection": "ENTITLED",
+                    "targetType": "LINE_ITEM",
+                    "title": "20% off all products",
+                    "type": "automatic",
+                    "value": {
+                        "percentage": 20
+                    }
+                },
+                {
+                    "allocationMethod": "ACROSS",
+                    "targetSelection": "ALL",
+                    "targetType": "LINE_ITEM",
+                    "title": "coupon",
+                    "type": "code",
+                    "value": {
+                        "percentage": 10
+                    }
+                },
+                {
+                    "allocationMethod": "EACH",
+                    "targetSelection": "ALL",
+                    "targetType": "SHIPPING_LINE",
+                    "title": "Auto shipping discount",
+                    "type": "automatic",
+                    "value": {
+                        "percentage": 100
+                    }
+                }
+            ],
+            "email": "orders@getelevar.com",
+            "phone": "",
+            "lineItems": [
+                {
+                    "discountAllocations": [
+                        {
+                            "amount": {
+                                "amount": 19.99,
+                                "currencyCode": "USD"
+                            },
+                            "discountApplication": {
+                                "allocationMethod": "ACROSS",
+                                "targetSelection": "ENTITLED",
+                                "targetType": "LINE_ITEM",
+                                "title": "20% off all products",
+                                "type": "automatic",
+                                "value": {
+                                    "percentage": 20
+                                }
+                            }
+                        },
+                        {
+                            "amount": {
+                                "amount": 8,
+                                "currencyCode": "USD"
+                            },
+                            "discountApplication": {
+                                "allocationMethod": "ACROSS",
+                                "targetSelection": "ALL",
+                                "targetType": "LINE_ITEM",
+                                "title": "coupon",
+                                "type": "code",
+                                "value": {
+                                    "percentage": 10
+                                }
+                            }
+                        }
+                    ],
+                    "id": "14519112269942",
+                    "quantity": 1,
+                    "title": "2017 Louisville Slugger C271 MLB Maple Wood Bat: WTLWPM271F16",
+                    "variant": {
+                        "id": "14519112269942",
+                        "image": {
+                            "src": "https://cdn.shopify.com/s/files/1/0069/2469/7718/products/wtlwpm271f16_64x64.jpg?v=1529886334"
+                        },
+                        "price": {
+                            "amount": 99.95,
+                            "currencyCode": "USD"
+                        },
+                        "product": {
+                            "id": "1614323155062",
+                            "title": "2017 Louisville Slugger C271 MLB Maple Wood Bat: WTLWPM271F16",
+                            "vendor": "Louisville Slugger",
+                            "type": "Bats",
+                            "untranslatedTitle": "2017 Louisville Slugger C271 MLB Maple Wood Bat: WTLWPM271F16"
+                        },
+                        "sku": "LS-WTLWPM271F1632",
+                        "title": "32\"",
+                        "untranslatedTitle": "32\""
+                    }
+                },
+                {
+                    "discountAllocations": [
+                        {
+                            "amount": {
+                                "amount": 16,
+                                "currencyCode": "USD"
+                            },
+                            "discountApplication": {
+                                "allocationMethod": "ACROSS",
+                                "targetSelection": "ENTITLED",
+                                "targetType": "LINE_ITEM",
+                                "title": "20% off all products",
+                                "type": "automatic",
+                                "value": {
+                                    "percentage": 20
+                                }
+                            }
+                        },
+                        {
+                            "amount": {
+                                "amount": 6.4,
+                                "currencyCode": "USD"
+                            },
+                            "discountApplication": {
+                                "allocationMethod": "ACROSS",
+                                "targetSelection": "ALL",
+                                "targetType": "LINE_ITEM",
+                                "title": "coupon",
+                                "type": "code",
+                                "value": {
+                                    "percentage": 10
+                                }
+                            }
+                        }
+                    ],
+                    "id": "14519102406774",
+                    "quantity": 2,
+                    "title": "2016 Easton Stealth Hyperskin Fastpitch Batting Gloves: A121367",
+                    "variant": {
+                        "id": "14519102406774",
+                        "image": {
+                            "src": "https://cdn.shopify.com/s/files/1/0069/2469/7718/products/ea-a121367back_1_1_1_64x64.jpg?v=1529886318"
+                        },
+                        "price": {
+                            "amount": 39.99,
+                            "currencyCode": "USD"
+                        },
+                        "product": {
+                            "id": "1614320992374",
+                            "title": "2016 Easton Stealth Hyperskin Fastpitch Batting Gloves: A121367",
+                            "vendor": "Easton",
+                            "type": "Equipment",
+                            "untranslatedTitle": "2016 Easton Stealth Hyperskin Fastpitch Batting Gloves: A121367"
+                        },
+                        "sku": "EA-A121367WPL",
+                        "title": "White/Purple / Large",
+                        "untranslatedTitle": "White/Purple / Large"
+                    }
+                },
+                {
+                    "discountAllocations": [
+                        {
+                            "amount": {
+                                "amount": 29.99,
+                                "currencyCode": "USD"
+                            },
+                            "discountApplication": {
+                                "allocationMethod": "ACROSS",
+                                "targetSelection": "ENTITLED",
+                                "targetType": "LINE_ITEM",
+                                "title": "20% off all products",
+                                "type": "automatic",
+                                "value": {
+                                    "percentage": 20
+                                }
+                            }
+                        },
+                        {
+                            "amount": {
+                                "amount": 12,
+                                "currencyCode": "USD"
+                            },
+                            "discountApplication": {
+                                "allocationMethod": "ACROSS",
+                                "targetSelection": "ALL",
+                                "targetType": "LINE_ITEM",
+                                "title": "coupon",
+                                "type": "code",
+                                "value": {
+                                    "percentage": 10
+                                }
+                            }
+                        }
+                    ],
+                    "id": "14519090446454",
+                    "quantity": 1,
+                    "title": "2017 Easton Z-Core XL BBCOR Baseball Bat: BB17ZX",
+                    "variant": {
+                        "id": "14519090446454",
+                        "image": {
+                            "src": "https://cdn.shopify.com/s/files/1/0069/2469/7718/products/bb17zx_2_1_64x64.jpg?v=1529886299"
+                        },
+                        "price": {
+                            "amount": 149.99,
+                            "currencyCode": "USD"
+                        },
+                        "product": {
+                            "id": "1614318403702",
+                            "title": "2017 Easton Z-Core XL BBCOR Baseball Bat: BB17ZX",
+                            "vendor": "Easton",
+                            "type": "Bats",
+                            "untranslatedTitle": "2017 Easton Z-Core XL BBCOR Baseball Bat: BB17ZX"
+                        },
+                        "sku": "EA-A11175933",
+                        "title": "33\" 30 oz",
+                        "untranslatedTitle": "33\" 30 oz"
+                    }
+                }
+            ],
+            "order": {},
+            "shippingAddress": {
+                "address1": "1059 Hills Plantation Drive",
+                "city": "Charleston",
+                "country": "US",
+                "countryCode": "US",
+                "firstName": "Brad",
+                "lastName": "Redding",
+                "phone": "",
+                "province": "SC",
+                "provinceCode": "SC",
+                "zip": "29412"
+            },
+            "subtotalPrice": {
+                "amount": 263.94,
+                "currencyCode": "USD"
+            },
+            "shippingLine": {
+                "price": {
+                    "amount": 7.25,
+                    "currencyCode": "USD"
+                }
+            },
+            "totalTax": {
+                "amount": 21.39,
+                "currencyCode": "USD"
+            },
+            "totalPrice": {
+                "amount": 258.93,
+                "currencyCode": "USD"
+            }
+        }
+    },
+    "clientId": "e670281b-f8ed-491a-a723-f85ba13f2187",
+    "timestamp": "2023-09-24T15:18:29.835Z",
+    "context": {
+        "document": {
+            "location": {
+                "href": "https://elevar-gtm-app-store.myshopify.com/checkouts/cn/c1-710114a59593dd99f6e7d949537af9d1/shipping",
+                "hash": "",
+                "host": "elevar-gtm-app-store.myshopify.com",
+                "hostname": "elevar-gtm-app-store.myshopify.com",
+                "origin": "https://elevar-gtm-app-store.myshopify.com",
+                "pathname": "/checkouts/cn/c1-710114a59593dd99f6e7d949537af9d1/shipping",
+                "port": "",
+                "protocol": "https:",
+                "search": ""
+            },
+            "referrer": "https://elevar-gtm-app-store.myshopify.com/",
+            "characterSet": "UTF-8",
+            "title": "Shipping - Elevar GTM App Store - Checkout"
+        },
+        "navigator": {
+            "language": "en-US",
+            "cookieEnabled": true,
+            "languages": [
+                "en-US",
+                "en"
+            ],
+            "userAgent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/116.0.0.0 Safari/537.36"
+        },
+        "window": {
+            "innerHeight": 753,
+            "innerWidth": 1540,
+            "outerHeight": 1703,
+            "outerWidth": 1540,
+            "pageXOffset": 0,
+            "pageYOffset": 0,
+            "location": {
+                "href": "https://elevar-gtm-app-store.myshopify.com/checkouts/cn/c1-710114a59593dd99f6e7d949537af9d1/shipping",
+                "hash": "",
+                "host": "elevar-gtm-app-store.myshopify.com",
+                "hostname": "elevar-gtm-app-store.myshopify.com",
+                "origin": "https://elevar-gtm-app-store.myshopify.com",
+                "pathname": "/checkouts/cn/c1-710114a59593dd99f6e7d949537af9d1/shipping",
+                "port": "",
+                "protocol": "https:",
+                "search": ""
+            },
+            "origin": "https://elevar-gtm-app-store.myshopify.com",
+            "screenX": 356,
+            "screenY": 25,
+            "scrollX": 0,
+            "scrollY": 0
+        }
+    }
+}

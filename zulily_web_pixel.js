@@ -1,14 +1,19 @@
 /* global browser, analytics */
 window.__elevar_web_pixel = {
-  initializeGTM: function() {
-    (function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
-    new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
-    j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
-    'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
-    })(window,document,'script','dataLayer','GTM-M89ZLX2N');
-},
+  initializeGTM: function () {
+    (function (w, d, s, l, i) {
+      w[l] = w[l] || [];
+      w[l].push({ "gtm.start": new Date().getTime(), event: "gtm.js" });
+      var f = d.getElementsByTagName(s)[0],
+        j = d.createElement(s),
+        dl = l != "dataLayer" ? "&l=" + l : "";
+      j.async = true;
+      j.src = "https://www.googletagmanager.com/gtm.js?id=" + i + dl;
+      f.parentNode.insertBefore(j, f);
+    })(window, document, "script", "dataLayer", "GTM-M89ZLX2N");
+  },
 
-  // Utility to get the Referring Event ID
+  // Utility to get the Referring Event ID which is the dl_user_date event id from the previous page
   getReferringEventId: async function () {
     try {
       const eventIds = await JSON.parse(
@@ -20,6 +25,43 @@ window.__elevar_web_pixel = {
       console.log("Couldn't retrieve referring event id");
       return undefined;
     }
+  },
+
+  getTotalShippingDiscount: async function (event) {
+    const discountApplications = event.data.checkout.discountApplications;
+    const shippingDiscountApplications = discountApplications.filter(
+      (discountApplication) =>
+        discountApplication.targetType === "SHIPPING_LINE"
+    );
+    const shippingDiscountApplicationsPercentBased =
+      shippingDiscountApplications.filter(
+        (discountApplication) =>
+          typeof discountApplication.value.percentage !== "undefined"
+      );
+    const shippingDiscountApplicationsFixedAmountBased =
+      shippingDiscountApplications.filter(
+        (discountApplication) =>
+          typeof discountApplication.value.amount !== "undefined"
+      );
+    debugger;
+    const percentBasedDiscounts =
+      shippingDiscountApplicationsPercentBased.reduce(
+        (acc, shippingDiscountAllocation) => {
+          const percentDiscount = shippingDiscountAllocation.value.percentage;
+          const totalShippingCost = event.data.checkout.shippingLine.price.amount;
+          const discount = (percentDiscount / 100) * totalShippingCost;
+          return acc + Number(discount);
+        },
+        0
+      );
+    const fixedBasedDiscounts =
+      shippingDiscountApplicationsFixedAmountBased.reduce(
+        (acc, shippingDiscountAllocation) => {
+          return acc + Number(shippingDiscountAllocation.amount);
+        },
+        0
+      );
+    return percentBasedDiscounts + fixedBasedDiscounts;
   },
 
   // Utility to get formatted items
