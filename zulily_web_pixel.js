@@ -94,48 +94,40 @@ window.__elevar_web_pixel = {
     });
   },
 
-  // Callbacks for analytics subscription
-  onCheckoutStarted: async function (event) {
-    console.log("test_checkout_started");
-    const reid = await this.getReferringEventId();
-    window.dataLayer.push({
-      event: "dl_begin_checkout",
-      referring_event_id: reid,
-      event_id: event.id,
-      items: this.getFormattedItems(event),
+  getBaseDLEvent: async function (event) {
+    return {
+      referring_event_id: await this.getReferringEventId(),
       cart_total: event.data.checkout.totalPrice.amount,
       subtotal: event.data.checkout.subtotalPrice.amount,
+      event_id: event.id,
+      items: this.getFormattedItems(event),
       shipping_discount: this.getTotalShippingDiscount(event),
       shipping_discount_reasons: this.getShippingDiscountReasons(event),
       ecommerce: {
         currencyCode: event.data.checkout.currencyCode,
       },
+    };
+  },
+
+  // Callbacks for analytics subscription
+  onCheckoutStarted: async function (event) {
+    window.dataLayer.push({
+      ...await this.getBaseDLEvent(event),
+      event: "dl_begin_checkout",
     });
   },
 
   onShippingInfoSubmitted: async function (event) {
-    const reid = await this.getReferringEventId();
     window.dataLayer.push({
+      ...await this.getBaseDLEvent(event),
       event: "dl_add_shipping_info",
-      referring_event_id: reid,
-      shipping_discount: this.getTotalShippingDiscount(event),
-      shipping_discount_reasons: this.getShippingDiscountReasons(event),
-      ecommerce: {
-        currencyCode: event.data.checkout.currencyCode,
-      },
     });
   },
 
   onPaymentInfoSubmitted: async function (event) {
-    const reid = await this.getReferringEventId();
     window.dataLayer.push({
+      ...await this.getBaseDLEvent(event),
       event: "dl_add_payment_info",
-      referring_event_id: reid,
-      shipping_discount: this.getTotalShippingDiscount(event),
-      shipping_discount_reasons: this.getShippingDiscountReasons(event),
-      ecommerce: {
-        currencyCode: event.data.checkout.currencyCode,
-      },
     });
   },
 };

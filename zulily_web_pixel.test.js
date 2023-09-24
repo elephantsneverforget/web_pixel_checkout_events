@@ -5,7 +5,7 @@
 // Fixes errors on jest methods
 /* eslint-env jest */
 
-/* global browser */
+// SETUP MOCKS ----------------------------
 // Mock the dataLayer array on the global window object to allow GTM to load
 global.window.dataLayer = [];
 global.document.createElement = jest.fn(() => ({
@@ -24,14 +24,66 @@ global.analytics = {
   subscribe: jest.fn(),
 };
 
+// Mocking localStorage in the web pixel
 global.browser = {
   localStorage: {
     getItem: jest.fn(),
   },
 };
+// SETUP MOCKS END -------------------------
 
 // Run the main script
 require("zulily_web_pixel");
+
+const buildExpectedDLPayload = (event, overrrides) => {
+  return {
+    cart_total: 258.93,
+    subtotal: 263.94,
+    shipping_discount: 7.25,
+    shipping_discount_reasons: '["Auto shipping discount"]',
+    items: [
+      {
+        item_id: "LS-WTLWPM271F1632",
+        item_variant_id: "14519112269942",
+        item_product_id: "1614323155062",
+        item_name:
+          "2017 Louisville Slugger C271 MLB Maple Wood Bat: WTLWPM271F16",
+        item_brand: "Louisville Slugger",
+        item_category: undefined,
+        item_variant: '32"',
+        price: 99.95,
+        quantity: 1,
+      },
+      {
+        item_brand: "Easton",
+        item_category: undefined,
+        item_id: "EA-A121367WPL",
+        item_name:
+          "2016 Easton Stealth Hyperskin Fastpitch Batting Gloves: A121367",
+        item_product_id: "1614320992374",
+        item_variant: "White/Purple / Large",
+        item_variant_id: "14519102406774",
+        price: 39.99,
+        quantity: 2,
+      },
+      {
+        item_brand: "Easton",
+        item_category: undefined,
+        item_id: "EA-A11175933",
+        item_name: "2017 Easton Z-Core XL BBCOR Baseball Bat: BB17ZX",
+        item_product_id: "1614318403702",
+        item_variant: '33" 30 oz',
+        item_variant_id: "14519090446454",
+        price: 149.99,
+        quantity: 1,
+      },
+    ],
+    ecommerce: {
+      currencyCode: "USD",
+    },
+    ...overrrides,
+  };
+};
 
 // Sample events have multiple line items, with multiple discount types
 // Sample events are based on the same cart, with the same items
@@ -50,7 +102,7 @@ describe("__elevar_web_pixel library", () => {
       value: dataLayerMock,
       writable: true,
     });
-    // Mock localStorage
+    // Mock localStorage to return a valid referring event ID
     global.browser.localStorage.getItem.mockResolvedValue(
       '["284eed8a-1189-48d0-9933-740a2db544fb","e5c51d1d-0a7a-4931-9c81-1f14e528eb2c","2ae30e44-6da9-4995-aef7-1a11415cd38d"]'
     );
@@ -60,8 +112,7 @@ describe("__elevar_web_pixel library", () => {
     jest.clearAllMocks();
   });
 
-  it("should initialize GTM correctly", () => {
-    window.__elevar_web_pixel.initializeGTM();
+  it("should initialize GTM correctly when script is run", () => {
     expect(
       document.querySelector(
         "script[src^='https://www.googletagmanager.com/gtm.js?id=']"
@@ -75,33 +126,36 @@ describe("__elevar_web_pixel library", () => {
   });
 
   it("should calculate the correct total shipping discount when discount is percentage based", async () => {
-    const totalDiscount = await window.__elevar_web_pixel.getTotalShippingDiscount(
-      beginCheckoutEvent
-    );
+    const totalDiscount =
+      await window.__elevar_web_pixel.getTotalShippingDiscount(
+        beginCheckoutEvent
+      );
     expect(totalDiscount).toBe(7.25);
   });
 
   it("should calculate the correct total shipping discount when discount is amount based", async () => {
-    const totalDiscount = await window.__elevar_web_pixel.getTotalShippingDiscount(
-      beginCheckoutEventWithAmountBasedDiscount
-    );
+    const totalDiscount =
+      await window.__elevar_web_pixel.getTotalShippingDiscount(
+        beginCheckoutEventWithAmountBasedDiscount
+      );
     expect(totalDiscount).toBe(5);
   });
 
   it("should calculate the correct shipping discount reasons", async () => {
-    const discountReasons = await window.__elevar_web_pixel.getShippingDiscountReasons(
-      beginCheckoutEventWithAmountBasedDiscount
-    );
-    expect(discountReasons).toBe("[\"Auto shipping discount\"]");
+    const discountReasons =
+      await window.__elevar_web_pixel.getShippingDiscountReasons(
+        beginCheckoutEventWithAmountBasedDiscount
+      );
+    expect(discountReasons).toBe('["Auto shipping discount"]');
   });
 
   it("should handle the checkout_started event", async () => {
     await window.__elevar_web_pixel.onCheckoutStarted(beginCheckoutEvent);
     expect(dataLayerMock[0]).toStrictEqual({
       event: "dl_begin_checkout",
-      ecommerce: {
-        currencyCode: "USD",
-      },
+      referring_event_id: "284eed8a-1189-48d0-9933-740a2db544fb",
+      event_id: "sh-c7c47dda-73ED-48EF-9E11-5E6651AF06AD",
+      ...buildExpectedDLPayload(beginCheckoutEvent, { cart_total: 258.92 }),
     });
   });
 
@@ -111,7 +165,9 @@ describe("__elevar_web_pixel library", () => {
     );
     expect(dataLayerMock[0]).toStrictEqual({
       event: "dl_add_shipping_info",
-      // ... other expected fields
+      referring_event_id: "284eed8a-1189-48d0-9933-740a2db544fb",
+      event_id: "sh-c7c62007-7FD4-47CD-6CDC-0B1DC76A2ABD",
+      ...buildExpectedDLPayload(beginCheckoutEvent),
     });
   });
 
@@ -122,7 +178,9 @@ describe("__elevar_web_pixel library", () => {
     );
     expect(dataLayerMock[0]).toStrictEqual({
       event: "dl_add_payment_info",
-      // ... other expected fields
+      referring_event_id: "284eed8a-1189-48d0-9933-740a2db544fb",
+      event_id: "sh-c7c6eea4-4EE4-45CA-0A1A-B015EDECD7BC",
+      ...buildExpectedDLPayload(beginCheckoutEvent),
     });
   });
 });
