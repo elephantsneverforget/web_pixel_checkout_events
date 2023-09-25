@@ -8,10 +8,7 @@
 // SETUP MOCKS ----------------------------
 // Mock the dataLayer array on the global window object to allow GTM to load
 global.window.dataLayer = [];
-global.document.createElement = jest.fn(() => ({
-  set async(val) {}, // mock setter for async
-  set src(val) {}, // mock setter for src
-}));
+
 global.document.getElementsByTagName = jest.fn(() => [
   {
     parentNode: {
@@ -19,6 +16,7 @@ global.document.getElementsByTagName = jest.fn(() => [
     },
   },
 ]);
+
 // Mocking Shopify analytics
 global.analytics = {
   subscribe: jest.fn(),
@@ -34,6 +32,7 @@ global.browser = {
 
 // Run the main script
 require("zulily_web_pixel");
+
 
 const buildExpectedDLPayload = (event, overrrides) => {
   return {
@@ -113,11 +112,12 @@ describe("__elevar_web_pixel library", () => {
   });
 
   it("should initialize GTM correctly when script is run", () => {
-    expect(
-      document.querySelector(
-        "script[src^='https://www.googletagmanager.com/gtm.js?id=']"
-      )
-    ).not.toBeNull();
+    expect(global.document.getElementsByTagName.parentNode.insertBefore).tohaveBeenCalled();
+    // expect(
+    //   document.querySelector(
+    //     "script[src^='https://www.googletagmanager.com/gtm.js?id=']"
+    //   )
+    // ).not.toBeNull();
   });
 
   it("should retrieve the correct referring event ID", async () => {
@@ -149,7 +149,7 @@ describe("__elevar_web_pixel library", () => {
     expect(discountReasons).toBe('["Auto shipping discount"]');
   });
 
-  it("should handle the checkout_started event", async () => {
+  it("should handle the begin checkout event", async () => {
     await window.__elevar_web_pixel.onCheckoutStarted(beginCheckoutEvent);
     expect(dataLayerMock[0]).toStrictEqual({
       event: "dl_begin_checkout",

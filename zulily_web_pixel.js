@@ -13,7 +13,6 @@ window.__elevar_web_pixel = {
     })(window, document, "script", "dataLayer", "GTM-M89ZLX2N");
   },
 
-  // Utility to get the Referring Event ID which is the dl_user_date event id from the previous page
   getReferringEventId: async function () {
     try {
       const eventIds = await JSON.parse(
@@ -28,68 +27,72 @@ window.__elevar_web_pixel = {
   },
 
   getTotalShippingDiscount: function (event) {
-    const discountApplications = event.data.checkout.discountApplications;
+    const discountApplications = event?.data?.checkout?.discountApplications || [];
     const shippingDiscountApplications = discountApplications.filter(
-      (discountApplication) =>
-        discountApplication.targetType === "SHIPPING_LINE"
+      (discountApplication) => discountApplication?.targetType === "SHIPPING_LINE"
     );
+
     const shippingDiscountApplicationsPercentBased =
       shippingDiscountApplications.filter(
         (discountApplication) =>
-          typeof discountApplication.value.percentage !== "undefined"
+          typeof discountApplication?.value?.percentage !== "undefined"
       );
+
     const shippingDiscountApplicationsFixedAmountBased =
       shippingDiscountApplications.filter(
         (discountApplication) =>
-          typeof discountApplication.value.amount !== "undefined"
+          typeof discountApplication?.value?.amount !== "undefined"
       );
+
     const percentBasedDiscounts =
       shippingDiscountApplicationsPercentBased.reduce(
         (acc, shippingDiscountAllocation) => {
-          const percentDiscount = shippingDiscountAllocation.value.percentage;
+          const percentDiscount = shippingDiscountAllocation?.value?.percentage;
           const totalShippingCost =
-            event.data.checkout.shippingLine.price.amount;
+            event?.data?.checkout?.shippingLine?.price?.amount;
           const discount = (percentDiscount / 100) * totalShippingCost;
           return acc + Number(discount);
         },
         0
       );
+
     const fixedBasedDiscounts =
       shippingDiscountApplicationsFixedAmountBased.reduce(
         (acc, shippingDiscountAllocation) => {
-          return acc + Number(shippingDiscountAllocation.value.amount);
+          return acc + Number(shippingDiscountAllocation?.value?.amount);
         },
         0
       );
+
     return percentBasedDiscounts + fixedBasedDiscounts;
   },
 
   getShippingDiscountReasons: function (event) {
-    const discountApplications = event.data.checkout.discountApplications;
+    const discountApplications = event?.data?.checkout?.discountApplications || [];
     const shippingDiscountApplications = discountApplications.filter(
-      (discountApplication) =>
-        discountApplication.targetType === "SHIPPING_LINE"
+      (discountApplication) => discountApplication?.targetType === "SHIPPING_LINE"
     );
+
     const reasons = shippingDiscountApplications.map((discountApplication) => {
-      return discountApplication.title ?? "Unknown";
+      return discountApplication?.title ?? "Unknown";
     });
+
     return reasons.length > 0 ? JSON.stringify(reasons) : undefined;
   },
 
-  // Utility to get formatted items
   getFormattedItems: function (event) {
-    const products = event.data.checkout.lineItems;
+    const products = event?.data?.checkout?.lineItems || [];
     return products.map(function (product) {
       return {
-        item_id: product.variant.sku,
-        item_variant_id: product.variant.id,
-        item_product_id: product.variant.product.id,
-        item_name: product.title,
-        item_brand: product.variant.product.vendor,
-        item_category: product.category,
-        item_variant: product.variant.title ?? product.title,
-        quantity: product.quantity,
-        price: product.variant.price.amount,
+        item_id: product?.variant?.sku,
+        item_variant_id: product?.variant?.id,
+        item_product_id: product?.variant?.product?.id,
+        item_name: product?.title,
+        item_brand: product?.variant?.product?.vendor,
+        item_category: product?.category,
+        item_variant: product?.variant?.title ?? product?.title,
+        quantity: product?.quantity,
+        price: product?.variant?.price?.amount,
       };
     });
   },
@@ -97,19 +100,18 @@ window.__elevar_web_pixel = {
   getBaseDLEvent: async function (event) {
     return {
       referring_event_id: await this.getReferringEventId(),
-      cart_total: event.data.checkout.totalPrice.amount,
-      subtotal: event.data.checkout.subtotalPrice.amount,
-      event_id: event.id,
+      cart_total: event?.data?.checkout?.totalPrice?.amount,
+      subtotal: event?.data?.checkout?.subtotalPrice?.amount,
+      event_id: event?.id,
       items: this.getFormattedItems(event),
       shipping_discount: this.getTotalShippingDiscount(event),
       shipping_discount_reasons: this.getShippingDiscountReasons(event),
       ecommerce: {
-        currencyCode: event.data.checkout.currencyCode,
+        currencyCode: event?.data?.checkout?.currencyCode,
       },
     };
   },
 
-  // Callbacks for analytics subscription
   onCheckoutStarted: async function (event) {
     window.dataLayer.push({
       ...await this.getBaseDLEvent(event),
@@ -142,13 +144,9 @@ analytics.subscribe(
 );
 analytics.subscribe(
   "checkout_shipping_info_submitted",
-  window.__elevar_web_pixel.onShippingInfoSubmitted.bind(
-    window.__elevar_web_pixel
-  )
+  window.__elevar_web_pixel.onShippingInfoSubmitted.bind(window.__elevar_web_pixel)
 );
 analytics.subscribe(
   "payment_info_submitted",
-  window.__elevar_web_pixel.onPaymentInfoSubmitted.bind(
-    window.__elevar_web_pixel
-  )
+  window.__elevar_web_pixel.onPaymentInfoSubmitted.bind(window.__elevar_web_pixel)
 );
