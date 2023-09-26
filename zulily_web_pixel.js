@@ -99,6 +99,12 @@ window.__elevar_web_pixel = {
 
   getBaseDLEvent: async function (event) {
     return {
+      marketing: {
+        user_id: await browser.cookie.get('_shopify_y'),
+      },
+      user_properties: {
+        customer_id: await browser.localStorage.getItem('__zulily_shopify_customer_id')
+      },
       referring_event_id: await this.getReferringEventId(),
       cart_total: event?.data?.checkout?.totalPrice?.amount,
       subtotal: event?.data?.checkout?.subtotalPrice?.amount,

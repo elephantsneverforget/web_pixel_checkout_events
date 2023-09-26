@@ -7,6 +7,7 @@
 
 // SETUP MOCKS ----------------------------
 // Mock the dataLayer array on the global window object to allow GTM to load
+
 global.window.dataLayer = [];
 
 global.document.getElementsByTagName = jest.fn(() => [
@@ -25,8 +26,20 @@ global.analytics = {
 // Mocking localStorage in the web pixel
 global.browser = {
   localStorage: {
-    getItem: jest.fn(),
+    getItem: jest.fn((key) => {
+      switch (key) {
+        case '__zulily_shopify_customer_id':
+          return Promise.resolve('CUSTOMERID');
+        default:
+          return Promise.resolve(
+            '["284eed8a-1189-48d0-9933-740a2db544fb","e5c51d1d-0a7a-4931-9c81-1f14e528eb2c","2ae30e44-6da9-4995-aef7-1a11415cd38d"]'
+          );
+      }
+    }),
   },
+  cookie: {
+    get: jest.fn().mockResolvedValue("_shopify_y"),
+  }
 };
 // SETUP MOCKS END -------------------------
 
@@ -40,6 +53,12 @@ const buildExpectedDLPayload = (event, overrrides) => {
     subtotal: 263.94,
     shipping_discount: 7.25,
     shipping_discount_reasons: '["Auto shipping discount"]',
+    marketing: {
+      user_id: "_shopify_y",
+    },
+    user_properties: {
+      customer_id: 'CUSTOMERID'
+    },
     items: [
       {
         item_id: "LS-WTLWPM271F1632",
@@ -101,10 +120,6 @@ describe("__elevar_web_pixel library", () => {
       value: dataLayerMock,
       writable: true,
     });
-    // Mock localStorage to return a valid referring event ID
-    global.browser.localStorage.getItem.mockResolvedValue(
-      '["284eed8a-1189-48d0-9933-740a2db544fb","e5c51d1d-0a7a-4931-9c81-1f14e528eb2c","2ae30e44-6da9-4995-aef7-1a11415cd38d"]'
-    );
   });
 
   afterEach(() => {
@@ -112,7 +127,7 @@ describe("__elevar_web_pixel library", () => {
   });
 
   it("should initialize GTM correctly when script is run", () => {
-    expect(global.document.getElementsByTagName.parentNode.insertBefore).tohaveBeenCalled();
+    expect(global.window.__elevar_web_pixel.initializeGTM).tohaveBeenCalled();
     // expect(
     //   document.querySelector(
     //     "script[src^='https://www.googletagmanager.com/gtm.js?id=']"
