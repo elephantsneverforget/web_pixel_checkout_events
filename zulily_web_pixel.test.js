@@ -30,6 +30,8 @@ global.browser = {
       switch (key) {
         case '__zulily_shopify_customer_id':
           return Promise.resolve('CUSTOMERID');
+        case '__zulily_ip_address':
+          return Promise.resolve('CUSTOMERIP');
         default:
           return Promise.resolve(
             '["284eed8a-1189-48d0-9933-740a2db544fb","e5c51d1d-0a7a-4931-9c81-1f14e528eb2c","2ae30e44-6da9-4995-aef7-1a11415cd38d"]'
@@ -53,6 +55,7 @@ const buildExpectedDLPayload = (event, overrrides) => {
     subtotal: 263.94,
     shipping_discount: 7.25,
     shipping_discount_reasons: '["Auto shipping discount"]',
+    encrypted_ip: "CUSTOMERIP",
     marketing: {
       user_id: "_shopify_y",
     },

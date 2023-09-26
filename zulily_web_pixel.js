@@ -105,6 +105,7 @@ window.__elevar_web_pixel = {
       user_properties: {
         customer_id: await browser.localStorage.getItem('__zulily_shopify_customer_id')
       },
+      encrypted_ip: await browser.localStorage.getItem('__zulily_ip_address'),
       referring_event_id: await this.getReferringEventId(),
       cart_total: event?.data?.checkout?.totalPrice?.amount,
       subtotal: event?.data?.checkout?.subtotalPrice?.amount,
