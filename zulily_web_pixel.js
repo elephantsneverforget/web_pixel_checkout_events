@@ -26,10 +26,24 @@ window.__elevar_web_pixel = {
     }
   },
 
+  getLineItemDiscounts: function (event) {
+    const lineItems = event?.data?.checkout?.lineItems || [];
+    let discount = 0;
+    lineItems.forEach((lineItem) => {
+      const lineItemDiscountAllocations = lineItem?.discountAllocations;
+      lineItemDiscountAllocations.forEach((lineItemDiscountAllocation) => {
+        discount += lineItemDiscountAllocation?.amount?.amount;
+      });
+    });
+    return discount;
+  },
+
   getTotalShippingDiscount: function (event) {
-    const discountApplications = event?.data?.checkout?.discountApplications || [];
+    const discountApplications =
+      event?.data?.checkout?.discountApplications || [];
     const shippingDiscountApplications = discountApplications.filter(
-      (discountApplication) => discountApplication?.targetType === "SHIPPING_LINE"
+      (discountApplication) =>
+        discountApplication?.targetType === "SHIPPING_LINE"
     );
 
     const shippingDiscountApplicationsPercentBased =
@@ -68,9 +82,11 @@ window.__elevar_web_pixel = {
   },
 
   getShippingDiscountReasons: function (event) {
-    const discountApplications = event?.data?.checkout?.discountApplications || [];
+    const discountApplications =
+      event?.data?.checkout?.discountApplications || [];
     const shippingDiscountApplications = discountApplications.filter(
-      (discountApplication) => discountApplication?.targetType === "SHIPPING_LINE"
+      (discountApplication) =>
+        discountApplication?.targetType === "SHIPPING_LINE"
     );
 
     const reasons = shippingDiscountApplications.map((discountApplication) => {
@@ -100,12 +116,14 @@ window.__elevar_web_pixel = {
   getBaseDLEvent: async function (event) {
     return {
       marketing: {
-        user_id: await browser.cookie.get('_shopify_y'),
+        user_id: await browser.cookie.get("_shopify_y"),
       },
       user_properties: {
-        customer_id: await browser.localStorage.getItem('__zulily_shopify_customer_id')
+        customer_id: await browser.localStorage.getItem(
+          "__zulily_shopify_customer_id"
+        ),
       },
-      encrypted_ip: await browser.localStorage.getItem('__zulily_ip_address'),
+      encrypted_ip: await browser.localStorage.getItem("__zulily_ip_address"),
       referring_event_id: await this.getReferringEventId(),
       cart_total: event?.data?.checkout?.totalPrice?.amount,
       subtotal: event?.data?.checkout?.subtotalPrice?.amount,
@@ -113,6 +131,7 @@ window.__elevar_web_pixel = {
       items: this.getFormattedItems(event),
       shipping_discount: this.getTotalShippingDiscount(event),
       shipping_discount_reasons: this.getShippingDiscountReasons(event),
+      line_item_discount: this.getLineItemDiscounts(event),
       ecommerce: {
         currencyCode: event?.data?.checkout?.currencyCode,
       },
@@ -121,21 +140,21 @@ window.__elevar_web_pixel = {
 
   onCheckoutStarted: async function (event) {
     window.dataLayer.push({
-      ...await this.getBaseDLEvent(event),
+      ...(await this.getBaseDLEvent(event)),
       event: "dl_begin_checkout",
     });
   },
 
   onShippingInfoSubmitted: async function (event) {
     window.dataLayer.push({
-      ...await this.getBaseDLEvent(event),
+      ...(await this.getBaseDLEvent(event)),
       event: "dl_add_shipping_info",
     });
   },
 
   onPaymentInfoSubmitted: async function (event) {
     window.dataLayer.push({
-      ...await this.getBaseDLEvent(event),
+      ...(await this.getBaseDLEvent(event)),
       event: "dl_add_payment_info",
     });
   },
@@ -151,9 +170,13 @@ analytics.subscribe(
 );
 analytics.subscribe(
   "checkout_shipping_info_submitted",
-  window.__elevar_web_pixel.onShippingInfoSubmitted.bind(window.__elevar_web_pixel)
+  window.__elevar_web_pixel.onShippingInfoSubmitted.bind(
+    window.__elevar_web_pixel
+  )
 );
 analytics.subscribe(
   "payment_info_submitted",
-  window.__elevar_web_pixel.onPaymentInfoSubmitted.bind(window.__elevar_web_pixel)
+  window.__elevar_web_pixel.onPaymentInfoSubmitted.bind(
+    window.__elevar_web_pixel
+  )
 );

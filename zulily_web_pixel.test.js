@@ -56,6 +56,7 @@ const buildExpectedDLPayload = (event, overrrides) => {
     shipping_discount: 7.25,
     shipping_discount_reasons: '["Auto shipping discount"]',
     encrypted_ip: "CUSTOMERIP",
+    line_item_discount: 92.38,
     marketing: {
       user_id: "_shopify_y",
     },
@@ -109,6 +110,7 @@ const buildExpectedDLPayload = (event, overrrides) => {
 // Sample events have multiple line items, with multiple discount types
 // Sample events are based on the same cart, with the same items
 const beginCheckoutEvent = require("./event_samples/begin_checkout_event.json");
+const beginCheckoutEventWithoutDiscounts = require("./event_samples/begin_checkout_event_without_discounts.json");
 const beginCheckoutEventWithAmountBasedDiscount = require("./event_samples/begin_checkout_event_with_amount_based_discount.json");
 const paymentInfoSubmittedEvent = require("./event_samples/payment_info_submitted_event.json");
 const shippingInfoSubmittedEvent = require("./event_samples/shipping_info_submitted_event.json");
@@ -131,11 +133,6 @@ describe("__elevar_web_pixel library", () => {
 
   it("should initialize GTM correctly when script is run", () => {
     expect(global.window.__elevar_web_pixel.initializeGTM).tohaveBeenCalled();
-    // expect(
-    //   document.querySelector(
-    //     "script[src^='https://www.googletagmanager.com/gtm.js?id=']"
-    //   )
-    // ).not.toBeNull();
   });
 
   it("should retrieve the correct referring event ID", async () => {
@@ -159,6 +156,30 @@ describe("__elevar_web_pixel library", () => {
     expect(totalDiscount).toBe(5);
   });
 
+  it("should calculate a discount of 0 when no shipping discount is applied", async () => {
+    const totalDiscount =
+      await window.__elevar_web_pixel.getTotalShippingDiscount(
+        beginCheckoutEventWithoutDiscounts
+      );
+    expect(totalDiscount).toBe(0);
+  });
+
+  it("should calculate the correct line item discounts if line item discounts are applied", async () => {
+    const totalDiscount =
+      await window.__elevar_web_pixel.getLineItemDiscounts(
+        beginCheckoutEvent
+      );
+    expect(totalDiscount).toBe(92.38);
+  });
+
+  it("should calculate the correct line item discounts if no line item discounts are applied", async () => {
+    const totalDiscount =
+      await window.__elevar_web_pixel.getLineItemDiscounts(
+        beginCheckoutEventWithoutDiscounts
+      );
+    expect(totalDiscount).toBe(0);
+  });
+
   it("should calculate the correct shipping discount reasons", async () => {
     const discountReasons =
       await window.__elevar_web_pixel.getShippingDiscountReasons(
@@ -166,6 +187,7 @@ describe("__elevar_web_pixel library", () => {
       );
     expect(discountReasons).toBe('["Auto shipping discount"]');
   });
+
 
   it("should handle the begin checkout event", async () => {
     await window.__elevar_web_pixel.onCheckoutStarted(beginCheckoutEvent);

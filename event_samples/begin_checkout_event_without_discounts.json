@@ -1,0 +1,122 @@
+{
+  "id": "sh-d6f3b2f1-3DBB-4AAC-936C-E59EBAB7509A",
+  "name": "checkout_started",
+  "data": {
+      "checkout": {
+          "attributes": [],
+          "billingAddress": {
+              "country": "CA",
+              "countryCode": "CA",
+              "firstName": "J",
+              "lastName": "C"
+          },
+          "token": "b600132129eb0e8544d90b0ae3114def",
+          "currencyCode": "USD",
+          "discountApplications": [],
+          "email": "jonathan@getelevar.com",
+          "lineItems": [
+              {
+                  "discountAllocations": [],
+                  "id": "46514385748260",
+                  "quantity": 1,
+                  "title": "Vision Studio Woodland Tree View Border Wall Art",
+                  "variant": {
+                      "id": "46514385748260",
+                      "image": {
+                          "src": "https://cdn.shopify.com/s/files/1/0735/8975/2100/products/zu114026315_main_tm1684526108_929b1423-b196-44bd-81e7-948bd4088923_64x64.jpg?v=1694042417"
+                      },
+                      "price": {
+                          "amount": 24.99,
+                          "currencyCode": "USD"
+                      },
+                      "product": {
+                          "id": "8615493304612",
+                          "title": "Vision Studio Woodland Tree View Border Wall Art",
+                          "vendor": "Stupell Industries",
+                          "type": "",
+                          "untranslatedTitle": "Vision Studio Woodland Tree View Border Wall Art"
+                      },
+                      "sku": "STUPELLINDUS_AS-384_WD_10X_GREY_10x05x15Wood",
+                      "title": "10x0.5x15 Wood",
+                      "untranslatedTitle": "10x0.5x15 Wood"
+                  }
+              }
+          ],
+          "order": {},
+          "shippingAddress": {
+              "country": "CA",
+              "countryCode": "CA",
+              "firstName": "J",
+              "lastName": "C"
+          },
+          "subtotalPrice": {
+              "amount": 24.99,
+              "currencyCode": "USD"
+          },
+          "shippingLine": {
+              "price": {}
+          },
+          "totalTax": {
+              "amount": 0,
+              "currencyCode": "USD"
+          },
+          "totalPrice": {
+              "amount": 24.99,
+              "currencyCode": "USD"
+          }
+      }
+  },
+  "clientId": "5d3a7c29-040e-487d-b1a6-c734f6808d3a",
+  "timestamp": "2023-09-27T14:03:27.446Z",
+  "context": {
+      "document": {
+          "location": {
+              "href": "https://shop.stg.zulily.com/checkouts/cn/c1-22d04a820fa3f28dd529190c7447e0d1/information?locale=en-US",
+              "hash": "",
+              "host": "shop.stg.zulily.com",
+              "hostname": "shop.stg.zulily.com",
+              "origin": "https://shop.stg.zulily.com",
+              "pathname": "/checkouts/cn/c1-22d04a820fa3f28dd529190c7447e0d1/information",
+              "port": "",
+              "protocol": "https:",
+              "search": "?locale=en-US"
+          },
+          "referrer": "https://shop.stg.zulily.com/",
+          "characterSet": "UTF-8",
+          "title": "Information - Dev - Zulily, LLC - Checkout"
+      },
+      "navigator": {
+          "language": "en-US",
+          "cookieEnabled": true,
+          "languages": [
+              "en-US",
+              "en"
+          ],
+          "userAgent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/116.0.0.0 Safari/537.36"
+      },
+      "window": {
+          "innerHeight": 646,
+          "innerWidth": 1708,
+          "outerHeight": 1534,
+          "outerWidth": 1538,
+          "pageXOffset": 0,
+          "pageYOffset": 0,
+          "location": {
+              "href": "https://shop.stg.zulily.com/checkouts/cn/c1-22d04a820fa3f28dd529190c7447e0d1/information?locale=en-US",
+              "hash": "",
+              "host": "shop.stg.zulily.com",
+              "hostname": "shop.stg.zulily.com",
+              "origin": "https://shop.stg.zulily.com",
+              "pathname": "/checkouts/cn/c1-22d04a820fa3f28dd529190c7447e0d1/information",
+              "port": "",
+              "protocol": "https:",
+              "search": "?locale=en-US"
+          },
+          "origin": "https://shop.stg.zulily.com",
+          "screenX": 459,
+          "screenY": 25,
+          "scrollX": 0,
+          "scrollY": 0
+      }
+  }
+}
