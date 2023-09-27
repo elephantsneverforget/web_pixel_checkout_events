@@ -52,6 +52,7 @@ require("zulily_web_pixel");
 const buildExpectedDLPayload = (event, overrrides) => {
   return {
     cart_total: 258.93,
+    total: 258.93,
     subtotal: 263.94,
     shipping_discount: 7.25,
     shipping_discount_reasons: '["Auto shipping discount"]',
@@ -195,7 +196,7 @@ describe("__elevar_web_pixel library", () => {
       event: "dl_begin_checkout",
       referring_event_id: "284eed8a-1189-48d0-9933-740a2db544fb",
       event_id: "sh-c7c47dda-73ED-48EF-9E11-5E6651AF06AD",
-      ...buildExpectedDLPayload(beginCheckoutEvent, { cart_total: 258.92 }),
+      ...buildExpectedDLPayload(beginCheckoutEvent, { cart_total: 258.92, total: 258.92 }),
     });
   });
 

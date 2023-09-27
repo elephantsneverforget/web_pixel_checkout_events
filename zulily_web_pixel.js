@@ -132,6 +132,7 @@ window.__elevar_web_pixel = {
       shipping_discount: this.getTotalShippingDiscount(event),
       shipping_discount_reasons: this.getShippingDiscountReasons(event),
       line_item_discount: this.getLineItemDiscounts(event),
+      total: event?.data?.checkout?.totalPrice?.amount,
       ecommerce: {
         currencyCode: event?.data?.checkout?.currencyCode,
       },
