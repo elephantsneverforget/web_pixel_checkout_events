@@ -122,23 +122,9 @@ window.__elevar_web_pixel = {
     });
   },
 
-  gtag: function () {
-    window.dataLayer = window.dataLayer || [];
-    window.dataLayer.push(arguments);
-  },
-
-  pushConsentToGTM: async function () {
+  isConsentGranted: async function () {
     const consentCookie = await browser.cookie.get("zoo");
-    consentCookie
-      ? console.log("Cookie cookie present. Opted out")
-      : console.log("Cookie cookie not present. Opted in");
-    window.__elevar_web_pixel.gtag("consent", "default", {
-      ad_storage: consentCookie ? this.DENIED : this.ACCEPTED,
-      analytics_storage: consentCookie ? this.DENIED : this.ACCEPTED,
-      functionality_storage: consentCookie ? this.DENIED : this.ACCEPTED,
-      personalization_storage: consentCookie ? this.DENIED : this.ACCEPTED,
-      security_storage: "accepted",
-    });
+    return consentCookie ? false : true;
   },
 
   getBaseDLEvent: async function (event) {
@@ -192,24 +178,29 @@ window.__elevar_web_pixel = {
 
 // Initialize GTM
 (async () => {
-  window.__elevar_web_pixel.initializeGTM();
-  await window.__elevar_web_pixel.pushConsentToGTM();
-})();
+  // Instead of pushing to GTM consent mode, don't load GTM if user is opt out
+  // Being in an iframe it's very difficult to debug the consent mode status
+  // This ensures there's no way for GTM to load if the user is opted out
+  const isConsentGranted = await window.__elevar_web_pixel.isConsentGranted();
+  if (!isConsentGranted) return;
 
-// Attach callbacks to the web pixel analytics subscriptions
-analytics.subscribe(
-  "checkout_started",
-  window.__elevar_web_pixel.onCheckoutStarted.bind(window.__elevar_web_pixel)
-);
-analytics.subscribe(
-  "checkout_shipping_info_submitted",
-  window.__elevar_web_pixel.onShippingInfoSubmitted.bind(
-    window.__elevar_web_pixel
-  )
-);
-analytics.subscribe(
-  "payment_info_submitted",
-  window.__elevar_web_pixel.onPaymentInfoSubmitted.bind(
-    window.__elevar_web_pixel
-  )
-);
+  window.__elevar_web_pixel.initializeGTM();
+
+  // Attach callbacks to the web pixel analytics subscriptions
+  analytics.subscribe(
+    "checkout_started",
+    window.__elevar_web_pixel.onCheckoutStarted.bind(window.__elevar_web_pixel)
+  );
+  analytics.subscribe(
+    "checkout_shipping_info_submitted",
+    window.__elevar_web_pixel.onShippingInfoSubmitted.bind(
+      window.__elevar_web_pixel
+    )
+  );
+  analytics.subscribe(
+    "payment_info_submitted",
+    window.__elevar_web_pixel.onPaymentInfoSubmitted.bind(
+      window.__elevar_web_pixel
+    )
+  );
+})();

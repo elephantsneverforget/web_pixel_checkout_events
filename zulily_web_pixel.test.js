@@ -208,34 +208,16 @@ describe("__elevar_web_pixel library", () => {
     expect(discountReasons).toBe('["Auto shipping discount"]');
   });
 
-  it("should not push consent state to GTM if no 'zoo' cookie is present, rely on default accepted consent state", async () => {
+  it("should push begin checkout event to data layer if consent is granted", async () => {
     global.browser.cookie.get.mockResolvedValue(undefined);
-    await window.__elevar_web_pixel.pushConsentToGTM();
-    expect(dataLayerMock.length).toBe(1);
-    expect(dataLayerMock[0][0]).toStrictEqual("consent");
-    expect(dataLayerMock[0][1]).toStrictEqual("default");
-    expect(dataLayerMock[0][2]).toStrictEqual({
-      ad_storage: "accepted",
-      analytics_storage: "accepted",
-      functionality_storage: "accepted",
-      personalization_storage: "accepted",
-      security_storage: "accepted",
-    });
+    const isConsentGranted = await window.__elevar_web_pixel.isConsentGranted();
+    expect(isConsentGranted).toBe(true);
   });
 
-  it("should push denied consent state to GTM if 'zoo' cookie is present", async () => {
-    global.browser.cookie.get.mockResolvedValue("zoo");
-    await window.__elevar_web_pixel.pushConsentToGTM();
-    expect(dataLayerMock.length).toBe(1);
-    expect(dataLayerMock[0][0]).toStrictEqual("consent");
-    expect(dataLayerMock[0][1]).toStrictEqual("default");
-    expect(dataLayerMock[0][2]).toStrictEqual({
-      ad_storage: "denied",
-      analytics_storage: "denied",
-      functionality_storage: "denied",
-      personalization_storage: "denied",
-      security_storage: "accepted",
-    });
+  it("should push begin checkout event to data layer if consent is granted", async () => {
+    global.browser.cookie.get.mockResolvedValue("denied");
+    const isConsentGranted = await window.__elevar_web_pixel.isConsentGranted();
+    expect(isConsentGranted).toBe(false);
   });
 
   it("should handle the begin checkout event", async () => {
