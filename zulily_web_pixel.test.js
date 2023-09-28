@@ -57,6 +57,7 @@ const buildExpectedDLPayload = (event, overrrides) => {
     shipping_discount: 7.25,
     shipping_discount_reasons: '["Auto shipping discount"]',
     encrypted_ip: "CUSTOMERIP",
+    discount_codes: "[\"20% off all products\",\"coupon\",\"Auto shipping discount\"]",
     line_item_discount: 92.38,
     marketing: {
       user_id: "_shopify_y",

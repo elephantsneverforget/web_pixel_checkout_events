@@ -26,6 +26,13 @@ window.__elevar_web_pixel = {
     }
   },
 
+  detDiscountCodes: function (event) {
+    const codes = event?.data?.checkout?.discountApplications?.map(
+      (discountCode) => discountCode?.title
+    );
+    return JSON.stringify(codes);
+  },
+
   getLineItemDiscounts: function (event) {
     const lineItems = event?.data?.checkout?.lineItems || [];
     let discount = 0;
@@ -129,6 +136,7 @@ window.__elevar_web_pixel = {
       subtotal: event?.data?.checkout?.subtotalPrice?.amount,
       event_id: event?.id,
       items: this.getFormattedItems(event),
+      discount_codes: this.detDiscountCodes(event),
       shipping_discount: this.getTotalShippingDiscount(event),
       shipping_discount_reasons: this.getShippingDiscountReasons(event),
       line_item_discount: this.getLineItemDiscounts(event),
