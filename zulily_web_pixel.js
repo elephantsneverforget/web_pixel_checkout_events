@@ -1,5 +1,7 @@
 /* global browser, analytics */
 window.__elevar_web_pixel = {
+  ACCEPTED: "accepted",
+  DENIED: "denied",
   initializeGTM: function () {
     (function (w, d, s, l, i) {
       w[l] = w[l] || [];
@@ -120,6 +122,26 @@ window.__elevar_web_pixel = {
     });
   },
 
+  gtag: function () {
+    window.dataLayer = window.dataLayer || [];
+    window.dataLayer.push(arguments);
+  },
+
+  pushConsentToGTM: async function () {
+    const consentCookie = await browser.cookie.get("zoo");
+    consentCookie
+      ? console.log("Cookie cookie present. Opted out")
+      : console.log("Cookie cookie not present. Opted in");
+    console.log("Cookie cookie present. Opted out");
+    window.__elevar_web_pixel.gtag("consent", "default", {
+      ad_storage: consentCookie ? this.DENIED : this.ACCEPTED,
+      analytics_storage: consentCookie ? this.DENIED : this.ACCEPTED,
+      functionality_storage: consentCookie ? this.DENIED : this.ACCEPTED,
+      personalization_storage: consentCookie ? this.DENIED : this.ACCEPTED,
+      security_storage: "accepted",
+    });
+  },
+
   getBaseDLEvent: async function (event) {
     return {
       marketing: {
@@ -170,7 +192,10 @@ window.__elevar_web_pixel = {
 };
 
 // Initialize GTM
-window.__elevar_web_pixel.initializeGTM();
+(async () => {
+  window.__elevar_web_pixel.initializeGTM();
+  await window.__elevar_web_pixel.pushConsentToGTM();
+})();
 
 // Attach callbacks to the web pixel analytics subscriptions
 analytics.subscribe(

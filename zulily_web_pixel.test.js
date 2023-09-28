@@ -28,10 +28,10 @@ global.browser = {
   localStorage: {
     getItem: jest.fn((key) => {
       switch (key) {
-        case '__zulily_shopify_customer_id':
-          return Promise.resolve('CUSTOMERID');
-        case '__zulily_ip_address':
-          return Promise.resolve('CUSTOMERIP');
+        case "__zulily_shopify_customer_id":
+          return Promise.resolve("CUSTOMERID");
+        case "__zulily_ip_address":
+          return Promise.resolve("CUSTOMERIP");
         default:
           return Promise.resolve(
             '["284eed8a-1189-48d0-9933-740a2db544fb","e5c51d1d-0a7a-4931-9c81-1f14e528eb2c","2ae30e44-6da9-4995-aef7-1a11415cd38d"]'
@@ -41,13 +41,12 @@ global.browser = {
   },
   cookie: {
     get: jest.fn().mockResolvedValue("_shopify_y"),
-  }
+  },
 };
 // SETUP MOCKS END -------------------------
 
 // Run the main script
 require("zulily_web_pixel");
-
 
 const buildExpectedDLPayload = (event, overrrides) => {
   return {
@@ -57,13 +56,14 @@ const buildExpectedDLPayload = (event, overrrides) => {
     shipping_discount: 7.25,
     shipping_discount_reasons: '["Auto shipping discount"]',
     encrypted_ip: "CUSTOMERIP",
-    discount_codes: "[\"20% off all products\",\"coupon\",\"Auto shipping discount\"]",
+    discount_codes:
+      '["20% off all products","coupon","Auto shipping discount"]',
     line_item_discount: 92.38,
     marketing: {
       user_id: "_shopify_y",
     },
     user_properties: {
-      customer_id: 'CUSTOMERID'
+      customer_id: "CUSTOMERID",
     },
     items: [
       {
@@ -127,6 +127,26 @@ describe("__elevar_web_pixel library", () => {
       value: dataLayerMock,
       writable: true,
     });
+
+    global.browser = {
+      localStorage: {
+        getItem: jest.fn((key) => {
+          switch (key) {
+            case "__zulily_shopify_customer_id":
+              return Promise.resolve("CUSTOMERID");
+            case "__zulily_ip_address":
+              return Promise.resolve("CUSTOMERIP");
+            default:
+              return Promise.resolve(
+                '["284eed8a-1189-48d0-9933-740a2db544fb","e5c51d1d-0a7a-4931-9c81-1f14e528eb2c","2ae30e44-6da9-4995-aef7-1a11415cd38d"]'
+              );
+          }
+        }),
+      },
+      cookie: {
+        get: jest.fn().mockResolvedValue("_shopify_y"),
+      },
+    };
   });
 
   afterEach(() => {
@@ -167,18 +187,16 @@ describe("__elevar_web_pixel library", () => {
   });
 
   it("should calculate the correct line item discounts if line item discounts are applied", async () => {
-    const totalDiscount =
-      await window.__elevar_web_pixel.getLineItemDiscounts(
-        beginCheckoutEvent
-      );
+    const totalDiscount = await window.__elevar_web_pixel.getLineItemDiscounts(
+      beginCheckoutEvent
+    );
     expect(totalDiscount).toBe(92.38);
   });
 
   it("should calculate the correct line item discounts if no line item discounts are applied", async () => {
-    const totalDiscount =
-      await window.__elevar_web_pixel.getLineItemDiscounts(
-        beginCheckoutEventWithoutDiscounts
-      );
+    const totalDiscount = await window.__elevar_web_pixel.getLineItemDiscounts(
+      beginCheckoutEventWithoutDiscounts
+    );
     expect(totalDiscount).toBe(0);
   });
 
@@ -190,6 +208,35 @@ describe("__elevar_web_pixel library", () => {
     expect(discountReasons).toBe('["Auto shipping discount"]');
   });
 
+  it("should not push consent state to GTM if no 'zoo' cookie is present, rely on default accepted consent state", async () => {
+    global.browser.cookie.get.mockResolvedValue(undefined);
+    await window.__elevar_web_pixel.pushConsentToGTM();
+    expect(dataLayerMock.length).toBe(1);
+    expect(dataLayerMock[0][0]).toStrictEqual("consent");
+    expect(dataLayerMock[0][1]).toStrictEqual("default");
+    expect(dataLayerMock[0][2]).toStrictEqual({
+      ad_storage: "accepted",
+      analytics_storage: "accepted",
+      functionality_storage: "accepted",
+      personalization_storage: "accepted",
+      security_storage: "accepted",
+    });
+  });
+
+  it("should push denied consent state to GTM if 'zoo' cookie is present", async () => {
+    global.browser.cookie.get.mockResolvedValue("zoo");
+    await window.__elevar_web_pixel.pushConsentToGTM();
+    expect(dataLayerMock.length).toBe(1);
+    expect(dataLayerMock[0][0]).toStrictEqual("consent");
+    expect(dataLayerMock[0][1]).toStrictEqual("default");
+    expect(dataLayerMock[0][2]).toStrictEqual({
+      ad_storage: "denied",
+      analytics_storage: "denied",
+      functionality_storage: "denied",
+      personalization_storage: "denied",
+      security_storage: "accepted",
+    });
+  });
 
   it("should handle the begin checkout event", async () => {
     await window.__elevar_web_pixel.onCheckoutStarted(beginCheckoutEvent);
@@ -197,7 +244,10 @@ describe("__elevar_web_pixel library", () => {
       event: "dl_begin_checkout",
       referring_event_id: "284eed8a-1189-48d0-9933-740a2db544fb",
       event_id: "sh-c7c47dda-73ED-48EF-9E11-5E6651AF06AD",
-      ...buildExpectedDLPayload(beginCheckoutEvent, { cart_total: 258.92, total: 258.92 }),
+      ...buildExpectedDLPayload(beginCheckoutEvent, {
+        cart_total: 258.92,
+        total: 258.92,
+      }),
     });
   });
 
