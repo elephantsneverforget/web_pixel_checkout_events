@@ -132,7 +132,6 @@ window.__elevar_web_pixel = {
     consentCookie
       ? console.log("Cookie cookie present. Opted out")
       : console.log("Cookie cookie not present. Opted in");
-    console.log("Cookie cookie present. Opted out");
     window.__elevar_web_pixel.gtag("consent", "default", {
       ad_storage: consentCookie ? this.DENIED : this.ACCEPTED,
       analytics_storage: consentCookie ? this.DENIED : this.ACCEPTED,
