@@ -3,6 +3,7 @@ window.__elevar_web_pixel = {
   ACCEPTED: "accepted",
   DENIED: "denied",
   initializeGTM: function () {
+    if (window.__gtm_loaded) return
     (function (w, d, s, l, i) {
       w[l] = w[l] || [];
       w[l].push({ "gtm.start": new Date().getTime(), event: "gtm.js" });
@@ -13,6 +14,7 @@ window.__elevar_web_pixel = {
       j.src = "https://www.googletagmanager.com/gtm.js?id=" + i + dl;
       f.parentNode.insertBefore(j, f);
     })(window, document, "script", "dataLayer", "GTM-M89ZLX2N");
+    window.__gtm_loaded = true;
   },
 
   getReferringEventId: async function () {
@@ -182,8 +184,9 @@ window.__elevar_web_pixel = {
   // Being in an iframe it's very difficult to debug the consent mode status
   // This ensures there's no way for GTM to load if the user is opted out
   const isConsentGranted = await window.__elevar_web_pixel.isConsentGranted();
-  if (!isConsentGranted) return;
-
+  const isCheckoutPage = window.location.pathname.includes("/checkouts");
+  if (!isConsentGranted || !isCheckoutPage) return;
+  
   window.__elevar_web_pixel.initializeGTM();
 
   // Attach callbacks to the web pixel analytics subscriptions
