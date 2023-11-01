@@ -13,21 +13,8 @@ window.__elevar_web_pixel = {
       j.async = true;
       j.src = "https://www.googletagmanager.com/gtm.js?id=" + i + dl;
       f.parentNode.insertBefore(j, f);
-    })(window, document, "script", "dataLayer", "GTM-M89ZLX2N");
+    })(window, document, "script", "dataLayer", "GTM-XXXXXXX");
     window.__gtm_loaded = true;
-  },
-
-  getReferringEventId: async function () {
-    try {
-      const eventIds = await JSON.parse(
-        await browser.localStorage.getItem("__zulily_pv_event_id_array")
-      );
-      const latestEventId = eventIds[0];
-      return latestEventId;
-    } catch (e) {
-      console.log("Couldn't retrieve referring event id");
-      return undefined;
-    }
   },
 
   detDiscountCodes: function (event) {
@@ -124,23 +111,11 @@ window.__elevar_web_pixel = {
     });
   },
 
-  isConsentGranted: async function () {
-    const consentCookie = await browser.cookie.get("zoo");
-    return consentCookie ? false : true;
-  },
-
   getBaseDLEvent: async function (event) {
     return {
       marketing: {
         user_id: await browser.cookie.get("_shopify_y"),
       },
-      user_properties: {
-        customer_id: await browser.localStorage.getItem(
-          "__zulily_shopify_customer_id"
-        ),
-      },
-      encrypted_ip: await browser.localStorage.getItem("__zulily_ip_address"),
-      referring_event_id: await this.getReferringEventId(),
       cart_total: event?.data?.checkout?.totalPrice?.amount,
       subtotal: event?.data?.checkout?.subtotalPrice?.amount,
       event_id: event?.id,
@@ -180,12 +155,8 @@ window.__elevar_web_pixel = {
 
 // Initialize GTM
 (async () => {
-  // Instead of pushing to GTM consent mode, don't load GTM if user is opt out
-  // Being in an iframe it's very difficult to debug the consent mode status
-  // This ensures there's no way for GTM to load if the user is opted out
-  const isConsentGranted = await window.__elevar_web_pixel.isConsentGranted();
   const isCheckoutPage = window.location.pathname.includes("/checkouts");
-  if (!isConsentGranted || !isCheckoutPage) return;
+  if (!isCheckoutPage) return;
   
   window.__elevar_web_pixel.initializeGTM();
 
